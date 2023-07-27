@@ -39,8 +39,6 @@ body{
 .buttonsArea{
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
 }
 
 .button{
@@ -61,6 +59,7 @@ button:hover{
 #equal{
     background-color: #8ab4f8;
     color: black;
+    width: 105px;
 }
 
 .op{
