@@ -53,12 +53,12 @@ function getOperationState(){
 // setters
 
 function setFirstOperatorState(value, state){
-    let firstOperator = JSON.stringify({value : value, state : false});
+    let firstOperator = JSON.stringify({value : value, state : state});
     result.setAttribute('data-firstOperator', firstOperator);
 }
 
 function setSecondOperatorState(value, state){
-    let secondOperator = JSON.stringify({value : value, state : false});
+    let secondOperator = JSON.stringify({value : value, state : state});
     result.setAttribute('data-secondOperator', secondOperator);
 }
 
@@ -107,3 +107,11 @@ pointButton.addEventListener('click', function(){
     }
 })
 
+// adding event listeners to operation buttons
+
+ac.addEventListener('click', function(e){
+    result.textContent = '';
+    setFirstOperatorState('',false);
+    setSecondOperatorState('',false);
+    setOperationState('',1);
+})
