@@ -1,8 +1,74 @@
-// defining DOM elements
+// define functions 
 
-const result = document.querySelector("#yes");
+const add = function(a, b) {
+    return a+b;
+  };
+  
+  const subtract = function(a, b) {
+      return a-b;
+  };
+  
+  const sum = function(elements) {
+      let x = elements.reduce(function(total, currentValue){
+      return total + currentValue;
+    },0)
+    return x;
+  };
+  
+  const multiply = function(...args) {
+    let x = args.reduce(function(total, currentValue){
+      return total * currentValue;
+    },1)
+    return x;
+  };
 
-const percentage = document.querySelector("#percentage");
+// defining result element
+
+let result = document.querySelector(".yes");
+let firstOperator = JSON.stringify({value : '', state :false});
+let secondOperator = JSON.stringify({value : '', state :false});
+let operation = JSON.stringify({value : '', state :1});
+result.setAttribute('data-firstOperator', firstOperator);
+result.setAttribute('data-secondOperator', secondOperator);
+result.setAttribute('data-operation', operation);
+result.setAttribute('data-pointState','false');
+
+// getters
+
+function getFirstOperatorState(){
+    let firstOperator = JSON.parse(result.getAttribute('data-firstOperator'));
+    return firstOperator;
+}
+
+function getSecondOperatorState(){
+    let secondOperator = JSON.parse(result.getAttribute('data-secondOperator'));
+    return secondOperator;
+}
+
+function getOperationState(){
+    let operation = JSON.parse(result.getAttribute('data-operation'));
+    return operation;
+}
+
+// setters
+
+function setFirstOperatorState(value, state){
+    let firstOperator = JSON.stringify({value : value, state : false});
+    result.setAttribute('data-firstOperator', firstOperator);
+}
+
+function setSecondOperatorState(value, state){
+    let secondOperator = JSON.stringify({value : value, state : false});
+    result.setAttribute('data-secondOperator', secondOperator);
+}
+
+function setOperationState(value){
+    let operation = JSON.stringify({value : value, state :1});
+    result.setAttribute('data-operation', operation);
+}
+
+// defining other DOM elements
+
 const ac = document.querySelector("#AC");
 const zeroNumber = document.querySelector("#zero");
 const oneNumber = document.querySelector("#one");
@@ -21,5 +87,23 @@ const plusButton = document.querySelector("#plus");
 const equalButton = document.querySelector("#equal");
 const pointButton = document.querySelector("#point");
 
-// adding event listeners
+const numButtons = [];
+numButtons.push(zeroNumber, oneNumber, twoNumber, threeNumber, fourNumber, fiveNumber, sixNumber, sevenNumber, eightNumber, nineNumber);
+
+// adding event listeners to num Buttons
+
+numButtons.forEach(function (button,index){
+    button.addEventListener('click', function(){
+        result.textContent = result.textContent + `${index}`;
+        setFirstOperatorState(result.textContent, true);
+    })
+});
+
+pointButton.addEventListener('click', function(){
+    if(result.getAttribute('data-pointState') == 'false'){
+        result.setAttribute('data-pointState','true');
+        result.textContent = result.textContent + '.';
+        setFirstOperatorState(result.textContent, true);
+    }
+})
 
