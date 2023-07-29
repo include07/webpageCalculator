@@ -116,23 +116,3 @@ ac.addEventListener('click', function(e){
     setOperationState('',1);
     result.setAttribute('data-pointState','false');
 })
-
-multiplyButton.addEventListener('click', function(e){
-
-});
-
-divideButton.addEventListener('click', function(e){
-
-});
-
-plusButton.addEventListener('click', function(e){
-
-});
-
-minusButton.addEventListener('click', function(e){
-
-});
-
-equalButton.addEventListener('click', function(e){
-
-});
