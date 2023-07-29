@@ -25,12 +25,11 @@ const add = function(a, b) {
 // defining result element
 
 let result = document.querySelector(".yes");
-let firstOperator = JSON.stringify({value : '', state :false});
-let secondOperator = JSON.stringify({value : '', state :false});
-let operation = JSON.stringify({value : '', state :1});
+let firstOperator = JSON.stringify({value : '', state :'false'});
+let secondOperator = JSON.stringify({value : '', state :'false'});
 result.setAttribute('data-firstOperator', firstOperator);
 result.setAttribute('data-secondOperator', secondOperator);
-result.setAttribute('data-operation', operation);
+result.setAttribute('data-operation', '');
 result.setAttribute('data-pointState','false');
 
 // getters
@@ -46,7 +45,7 @@ function getSecondOperatorState(){
 }
 
 function getOperationState(){
-    let operation = JSON.parse(result.getAttribute('data-operation'));
+    let operation = result.getAttribute('data-operation');
     return operation;
 }
 
@@ -63,8 +62,7 @@ function setSecondOperatorState(value, state){
 }
 
 function setOperationState(value){
-    let operation = JSON.stringify({value : value, state :1});
-    result.setAttribute('data-operation', operation);
+    result.setAttribute('data-operation', value);
 }
 
 // defining other DOM elements
@@ -116,3 +114,24 @@ ac.addEventListener('click', function(e){
     setOperationState('',1);
     result.setAttribute('data-pointState','false');
 })
+
+divideButton.addEventListener('click', function(e){
+    setOperationState('/');
+})
+
+plusButton.addEventListener('click', function(e){
+    setOperationState('+');
+})
+
+minusButton.addEventListener('click', function(e){
+    setOperationState('-');
+})
+
+multiplyButton.addEventListener('click', function(e){
+    setOperationState('*');
+})
+
+equalButton.addEventListener('click', function(e){
+    setOperationState('=');
+})
+
