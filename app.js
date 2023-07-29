@@ -1,26 +1,42 @@
 // define functions 
-
-const add = function(a, b) {
+function add(a, b) {
     return a+b;
   };
   
-  const subtract = function(a, b) {
-      return a-b;
-  };
+function substract(a, b) {
+    return a-b;
+};
   
-  const sum = function(elements) {
-      let x = elements.reduce(function(total, currentValue){
-      return total + currentValue;
-    },0)
-    return x;
-  };
+function sum(elements) {
+    let x = elements.reduce(function(total, currentValue){
+    return total + currentValue;
+},0)
+return x;
+};
   
-  const multiply = function(...args) {
-    let x = args.reduce(function(total, currentValue){
-      return total * currentValue;
-    },1)
-    return x;
-  };
+function multiply(...args) {
+let x = args.reduce(function(total, currentValue){
+    return total * currentValue;
+},1)
+return x;
+};
+
+function divide(a, b){
+    if(b != 0) return a/b;
+    else return NaN;
+}
+
+function operations(string, a, b){
+    if(string == '+'){
+        return add(a,b);
+    }else if(string == '/'){
+        return divide(a, b);
+    }else if(string == '*'){
+        return multiply(a, b);
+    }else if(string == '-'){
+        return substract(a, b);
+    }
+}
 
 // defining result element
 
@@ -31,6 +47,7 @@ result.setAttribute('data-firstOperator', firstOperator);
 result.setAttribute('data-secondOperator', secondOperator);
 result.setAttribute('data-operation', '');
 result.setAttribute('data-pointState','false');
+result.setAttribute('data-flag','0');
 
 // getters
 
@@ -92,8 +109,18 @@ numButtons.push(zeroNumber, oneNumber, twoNumber, threeNumber, fourNumber, fiveN
 
 numButtons.forEach(function (button,index){
     button.addEventListener('click', function(){
-        result.textContent = result.textContent + `${index}`;
-        setFirstOperatorState(result.textContent, true);
+        if(result.getAttribute('data-operation')==''){
+            result.textContent = result.textContent + `${index}`;
+            setFirstOperatorState(result.textContent, 'true');
+        }else{
+            if(getSecondOperatorState().state == 'false'){
+                result.textContent = `${index}`;
+                setSecondOperatorState(result.textContent, 'true');
+            }else{
+                result.textContent = result.textContent + `${index}`;
+                setSecondOperatorState(result.textContent, 'true');
+            }
+        }
     })
 });
 
@@ -101,7 +128,7 @@ pointButton.addEventListener('click', function(){
     if(result.getAttribute('data-pointState') == 'false'){
         result.setAttribute('data-pointState','true');
         result.textContent = result.textContent + '.';
-        setFirstOperatorState(result.textContent, true);
+        setFirstOperatorState(result.textContent, 'true');
     }
 })
 
@@ -109,29 +136,65 @@ pointButton.addEventListener('click', function(){
 
 ac.addEventListener('click', function(e){
     result.textContent = '';
-    setFirstOperatorState('',false);
-    setSecondOperatorState('',false);
-    setOperationState('',1);
+    setFirstOperatorState('','false');
+    setSecondOperatorState('','false');
+    setOperationState('','1');
     result.setAttribute('data-pointState','false');
 })
 
 divideButton.addEventListener('click', function(e){
+    result.setAttribute('data-operation','/');
     setOperationState('/');
+    result.setAttribute('data-flag','0')
 })
 
 plusButton.addEventListener('click', function(e){
+    result.setAttribute('data-operation','+');
     setOperationState('+');
+    result.setAttribute('data-flag','0')
 })
 
 minusButton.addEventListener('click', function(e){
+    result.setAttribute('data-operation','-');
     setOperationState('-');
+    result.setAttribute('data-flag','0')
 })
 
 multiplyButton.addEventListener('click', function(e){
+    result.setAttribute('data-operation','*');
     setOperationState('*');
+    result.setAttribute('data-flag','0')
 })
 
 equalButton.addEventListener('click', function(e){
-    setOperationState('=');
+    result.setAttribute('data-flag','1')
 })
+
+// defining mutation observer
+
+let observer = new MutationObserver(function(mutationList, observer){
+    if (getFirstOperatorState().state === 'true' && getOperationState() !== '' && getSecondOperatorState().state === 'true' && result.getAttribute('data-flag')=='1') {
+        // Calculate result
+        let resultValue = operations(getOperationState(), Number(getFirstOperatorState().value), Number(getSecondOperatorState().value));
+        
+        // Set result in text content of the element
+        result.textContent = resultValue;
+
+        // Update first operator to be the current result
+        setFirstOperatorState(resultValue.toString(), 'true');
+
+        // Reset the operation and second operator
+        setOperationState('');
+        setSecondOperatorState('', 'false');
+    }
+});
+
+let config = {
+    attributes: true,
+    childList: false,
+    subtree: false,
+    attributeOldValue: true
+};
+
+observer.observe(result, config);
 
