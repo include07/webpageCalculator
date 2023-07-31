@@ -191,8 +191,8 @@ let observer = new MutationObserver(function(mutationList, observer){
     }
     if(result.textContent == '01000101'){
         let audio = sus
-        sus.currentTime = 0; //reset the current time
-        sus.play(); //play sound if key is played
+        audio.currentTime = 0; //reset the current time
+        audio.play(); //play sound if key is played
     }
 });
 
