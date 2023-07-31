@@ -1,3 +1,5 @@
+//SUS
+const sus = new Audio('sus.mp3');
 // define functions 
 function add(a, b) {
     return a+b;
@@ -186,6 +188,11 @@ let observer = new MutationObserver(function(mutationList, observer){
         // Reset the operation and second operator
         setOperationState('');
         setSecondOperatorState('', 'false');
+    }
+    if(result.textContent == '01000101'){
+        let audio = sus
+        sus.currentTime = 0; //reset the current time
+        sus.play(); //play sound if key is played
     }
 });
 
